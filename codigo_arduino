@@ -1,0 +1,32 @@
+// Incluir librería EmonLib
+#include "EmonLib.h"
+
+// Crear una instancia EnergyMonitor
+EnergyMonitor energyMonitor;
+
+// Voltaje de la red eléctrica Colombia ~110V
+float voltajeRed = 110.0; //Variable tipo decimal
+
+void setup() //Iniciar set de arduino
+{
+  Serial.begin(9600);
+  // Se crea una clase indicando
+  // 1. Número de pin del Arduino (A0)
+  // 2. Valor de calibración: teórico
+  // 3. Guarda el valor en la clase
+  energyMonitor.current(0, 32.5);
+}
+
+void loop()
+{
+  // Pasamos el número de muestras que queremos tomar
+  double Corriente = energyMonitor.calcIrms(1484);
+  // Calculamos la potencia aparente
+  double potencia =  Corriente * voltajeRed;
+
+  // Mostramos la información en Serial Monitor
+  Serial.print("Potencia = ");
+  Serial.print(potencia);
+  Serial.print("    Corriente = ");
+  Serial.println(Corriente);
+}
